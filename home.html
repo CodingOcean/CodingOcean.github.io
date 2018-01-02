@@ -1,0 +1,1026 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>API Reference</title>
+
+  <link href="stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
+  <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
+  <link href="stylesheets/default.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="javascripts/all.js" type="text/javascript"></script>
+
+  <script>
+      $(function() {
+          var langs = [];
+          langs.push("shell");
+          langs.push("ruby");
+          langs.push("python");
+          setupLanguages( langs );
+      });
+  </script>
+</head>
+
+<body class="index">
+<a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" />
+      </span>
+</a>
+<div class="tocify-wrapper">
+  <img id="companyLogo" src="images/ArubaNetworks.svg.png" />
+  <div class="lang-selector">
+    <a href="#" data-language-name="shell"> cURL</a>
+    <a href="#" data-language-name="ruby"> Ruby</a>
+    <a href="#" data-language-name="python"> Python</a>
+  </div>
+        <div class="search">
+            <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+        <div id="toc">
+        </div>
+        <!--<ul class="toc-footer">-->
+            <!--<li><a href='#'>Sign Up for a Developer Key</a></li>-->
+        <!--</ul>-->
+</div>
+<div class="page-wrapper">
+  <div class="dark-box"></div>
+  <div class="content">
+    <h1 class="h1Color" id="gettingStarted">Getting started</h1>
+      <h2 id="overview">Overview</h2>
+      <p>Central supports an Application Programming Interface (API) to allow developers to create and manage APIs. It supports polling-based and Representational State Transfer (REST)-based APIs. The REST APIs support HTTP GET operations by providing a specific URL for each query. The output for these operations is returned in the JSON format. This feature allows the Central users to write custom applications, embed, or integrate the APIs with their own applications.</p>
+      <p>For secure access to the APIs, the Central API Framework plug-‐in supports OAuth protocol for authentication and authorization. The access tokens provide a temporary and secure access to the APIs. The access tokens have a limited lifetime for security reasons and the applications should use the refresh API to obtain new tokens periodically (every 2 hours).</p>
+      <p><strong>To start using central API you will need following two things:</strong>
+          <br>-	Access to API gateway and its URL.
+          <br>-	A valid token to query the API gateway.
+          <br>- Access to swagger API tool to get an exhaustive list Aruba Cental APIs.
+      </p>
+
+    <h1 class="h1Color" id="gatewayAccess">API Gateway</h1>
+      <h2 id="gatewayUrl">API URL </h2>
+    <p>This section gives information on where to find your Central API Gateway URL that you can use in your application.</p>
+      <p>Login to your Cental account and select 'Maintenance app' from top left app grid:</p>
+      <div>
+          <img class="insideScreenshotMedium" src="images/selectMaintenanceApp.JPG" alt="">
+      </div>
+      <br>
+      <p>Make sure you have access to 'API Gateway' under 'Maintenance'</p>
+      <div>
+          <img class="insideScreenshotSmall" src="images/clickApiGateway.JPG" alt="">
+      </div>
+      <br>
+      <p>On API Gateway page you will see a URL under APIs</p>
+      <div>
+          <img class="insideScreenshotLarge" src="images/apiGatewayAPIs.JPG" alt="">
+      </div>
+      <br>
+      <h3>From above URL strip out '/swagger/central' and your API Gateway base URL will become:</h3>
+      <h3><code>https://sol-api.arubathena.com</code></h3>
+      <div style="width: 60%"   class="alert alert-primary" role="alert">
+          <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;&nbsp;Above is just an example, please remember to find your URL as described above.
+      </div>
+      <br>
+
+      <h1  class="h1Color" id="token">Access Token</h1>
+      <p>The access token is a string that identifies a user, app, or web page and is used by the app to access an API. The access tokens provide a temporary and secure access to the APIs. The access tokens have a limited lifetime. If the application uses web server or user-agent OAuth authentication flows, a refresh token is provided during authorization that can be used to get a new access token.</p>
+      <p>If you are writing a long running applications (web app) or native mobile application you should refresh the token periodically.</p>
+      <p>There are teo ways to obtain the token:
+          <br>- Offline Token Download from the UI.
+          <br>- Generating Token via auth code.
+      </p>
+      <div style="width:60%" class="alert alert-primary" role="alert">
+          <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;&nbsp;Remember, your token expires in two hours, so would have to refresh your token within two hours using your refresh token (you obtain refresh token when you generate your access token).
+      </div>
+
+      <h2 id="offline">Offline Token Download</h2>
+      <p>A token can be generated from the Central UI. Go to the 'API Gateway' under 'Maintenance app' as desribed in API Gateway section</p>
+      <p>Click on the 'Authorized Apps & Tokens' on the left.</p>
+      <div>
+          <img class="insideScreenshotLarge"  src="images/authorisedAppsAndTokens.JPG" alt="">
+      </div>
+      <br>
+      <p>Here, you can either generate a new token or access a perviously generated token</p>
+      <h3>Generate a new token</h3>
+      <p>Click on the 'Add Apps & Token' and the following pop up will appear and you can enter an application name and click generate:</p>
+      <div>
+          <img class="insideScreenshotLarge" src="images/createAppPopUp.JPG" alt="">
+      </div>
+      <br>
+      <div style="width: 60%"   class="alert alert-primary" role="alert">
+          <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;&nbsp;Above is just an example, please add appropriate app name for yourself.
+      </div>
+      <br>
+
+      <p>You will see your token 'TestApp' in the list of tokens underneath. Click on 'View Tokens' for the 'TestApp' that you just generated.</p>
+      <div>
+          <img class="insideScreenshotLarge" src="images/TestAppToken.JPG" alt="">
+      </div>
+      <br>
+      <p>You will see a pop up come up that shows 'Download Token.' Click on 'Download token'</p>
+      <div>
+          <img class="insideScreenshotLarge" src="images/TokenpPopUp.JPG" alt="">
+      </div>
+      <br>
+      <p>A popup will appear and it will display the 'access_token', 'refresh_token', and other details.</p>
+      <div>
+          <img class="insideScreenshotMedium" src="images/Accesstoken.JPG" alt="">
+      </div>
+      <br>
+      <p>Now, this access token can be used in your custom application to get data from Central's API Gateway</p>
+      <div style="width: 60%"   class="alert alert-primary" role="alert">
+          <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;&nbsp;Please, note that you will also need this access token when trying out different APIs on Central Swagger page.
+      </div>
+      <br>
+
+      <h2>Client Id and Client Secret</h2>
+      <p>Client id and client secret can be found in the table under 'Authorized Apps & Tokens' against every app name</p>
+      <div>
+          <img class="insideScreenshotLarge" src="images/authorisedAppsAndTokens.JPG" alt="">
+      </div>
+      <br>
+      <div style="width: 60%"   class="alert alert-primary" role="alert">
+          <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;&nbsp;Client id and client secret will be need when you want to generate token via authorization code method (Explained below)
+      </div>
+      <br>
+
+      <h2 id="authGrant">Authorization Code Grant</h2>
+      <p>The following sections describe the procedures for obtaining the access tokens using the authorization code
+          grant mechanism. It invovles three steps.
+      </p>
+      <p>1. Obtain CSRF token and session id</p>
+      <p>2. Obtain Authorization Code</p>
+      <p>3. Exchange Code for a Token</p>
+
+      <h2 id="csrfSession">1. CSRF token and session id</h2>
+      <blockquote>
+          <p>1. Get CSRF token and session id:</p>
+      </blockquote>
+      <pre><code class="highlight python">
+<span class="hljs-keyword">import</span> response
+<span class="hljs-keyword">import</span> json
+
+<span class="hljs-comment">Setting the urls</span>
+base_url = <span class="hljs-string">"https://sol-api.arubathena.com"</span>
+url1 = <span class="hljs-string">"/oauth2/authorize/central/api/login"</span>
+authurl = base_url + url1
+
+<span class="hljs-comment">Setting the params, headers and the payload</span>
+params = {"client_id": clientid}
+headers = {'Content-type': 'application/json'}
+payload = {"username": username, "password": password}
+
+<span class="hljs-comment">Sending the request</span>
+resp = requests.post(authurl, params=params, data=json.dumps(payload), headers=headers)
+
+<span class="hljs-comment">extacting the CSRF token anb session id from the response</span>
+csrf = resp.cookies['<span class="hljs-string">csrftoken</span>']
+ses = resp.cookies['<span class="hljs-string">session</span>']
+
+<span class="hljs-comment">Print them out</span>
+if resp.status_code != 200:
+    print("Failure! The code is: {}".format(resp.status_code))
+else:
+    print("\\nCSRF cookie is: {0}\nSession cookie is {1}\n".format(csrf, ses))
+    </code></pre>
+      <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+      </blockquote>
+      <pre><code class="highlight json">
+  {
+    "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-number">true</span></span>
+  }
+</code></pre>
+
+      <p>Take your base API Gateway url as follows (below is an example. remember to use your own base url)</p>
+      <p><code>https://sol-api.arubathena.com</code></p>
+      <p>and append the the following url:</p>
+      <p><code>/oauth2/authorize/central/api/login</code></p>
+      <p>The url to obtain the CSRF token and session id becomes:</p>
+      <h3><code>https://sol-api.arubathena.com/oauth2/authorize/central/api/login</code></h3>
+      <h3>Example url:</h3>
+      <p><button type="button" class="btn btn-primary">post request</button></p>
+      <h3><code>https://sol-api.arubathena.com/oauth2/authorize/central/api/login?client_id=5fcb47dc200049d9a0f4506fc51c1c90</code></h3>
+      <br>
+      <p>Obtaining client id and client secret is explained in above section</p>
+      <p>Use your Aruba central login credentials as username and password</p>
+      <div style="width: 60%"   class="alert alert-primary" role="alert">
+          <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;&nbsp;CSRF token and session id will received in the cookies!
+      </div>
+
+      <h2 id="authCode">2. Authorization Code</h2>
+      <blockquote>
+          <p>2. Get auth code:</p>
+      </blockquote>
+      <pre><code class="highlight python">
+<span class="hljs-comment">Setting the urls</span>
+base_url = <span class="hljs-string">"https://sol-api.arubathena.com"</span>
+url2 = <span class="hljs-string">"/oauth2/authorize/central/api"</span>
+authurl = base_url + url2
+
+<span class="hljs-comment">Setting the params, headers and the payload</span>
+sesk = "session=" + ses
+headers2 = {}
+headers2 = {
+    'X-CSRF-TOKEN': csrf,
+    'Content-type': 'application/json',
+    'Cookie': sesk
+}
+payload2 = {"customer_id": customerid}
+params2 = {"client_id": clientid, "response_type": "code", "scope": "all"}
+
+<span class="hljs-comment">Sending the request</span>
+resp = requests.post(authcodeurl, params=params2, data=json.dumps(payload2), headers=headers2)
+
+<span class="hljs-comment">extacting the auth code from the response</span>
+authcode = resp.json()['auth_code']
+
+<span class="hljs-comment">Print it out</span>
+print("\nThe Auth Code is:{}\n".format(authcode))
+      </code></pre>
+      <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+      </blockquote>
+      <pre><code class="highlight json">
+  {
+    "<span class="hljs-attribute">auth_code</span>": <span class="hljs-value"><span class="hljs-number">32f234523456234r8e6yh40d7f4pq4kl</span></span>
+  }
+</code></pre>
+
+      <p>Auth code is unique string with a TTL of 5 minutes, the code can be exchanged for a token to access APIs</p>
+      <p>Take your base API Gateway url as follows (below is an example. remember to use your own base url)</p>
+      <p><code>https://sol-api.arubathena.com</code></p>
+      <p>and appned the the following url:</p>
+      <p><code>/oauth2/authorize/central/api</code></p>
+      <p>The url to obtain the auth code becomes:</p>
+      <h3><code>https://sol-api.arubathena.com/oauth2/authorize/central/api</code></h3>
+      <h3>Example url:</h3>
+      <p><button type="button" class="btn btn-primary">post request</button></p>
+      <h3><code>https://sol-api.arubathena.com/oauth2/authorize/central/api?client_id=5fcb47dc200049d9a0f4506fc51c1c90&response_type=code&scope=all</code></h3>
+      <div style="width: 60%"   class="alert alert-primary" role="alert">
+          <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;&nbsp;Remember to use your API Gateway base url instead of 'https://sol-api.arubathena.com'
+      </div>
+      <br>
+
+      <h3>Query Parameters for the API</h3>
+      <table>
+          <thead>
+          <tr>
+              <th>Parameter</th>
+              <th>Values</th>
+              <th>Description</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+              <td>client_id</td>
+              <td>A unique
+                  hexadecimal
+                  string</td>
+              <td>A unique identifier that identifies the caller. The application developers can
+                  request a client ID and client secret key by registering with Aruba Technical
+                  Support.
+              </td>
+          </tr>
+          <tr>
+              <td>response_type</td>
+              <td>code</td>
+              <td>Use code to get the authorization code that can be exchanged for token.
+              </td>
+          </tr>
+          <tr>
+              <td>scope</td>
+              <td>all or read </td>
+              <td>Requests API permissions, all for read-write and read for read access.
+              </td>
+          </tr>
+          </tbody>
+      </table>
+
+      <h3>A JSON dictionary with the following values is returned as a response</h3>
+      <table>
+          <thead>
+          <tr>
+              <th>Parameter</th>
+              <th>Values</th>
+              <th>Description</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+              <td>auth_code</td>
+              <td>string</td>
+              <td>A unique string with a TTL of 5 minutes, the code can be exchanged for a token to access
+                  APIs
+              </td>
+          </tr>
+          </tbody>
+      </table>
+
+
+      <h2 id="exchangeToken">3. Exchange Code for a Token</h2>
+      <blockquote>
+          <p>3. Get Access Token:</p>
+      </blockquote>
+      <code><pre>
+<span class="hljs-comment">Setting the urls</span>
+base_url = <span class="hljs-string">"https://sol-api.arubathena.com"</span>
+url3 = <span class="hljs-string">"/oauth2/token"</span>
+swapurl = base_url + url3
+
+<span class="hljs-comment">Setting the params, headers and the payload</span>
+params3 = {"client_id": clientid, "grant_type": "authorization_code", "client_secret": clientsecret, "code": authcode}
+
+<span class="hljs-comment">Sending the request</span>
+resp = requests.post(swapurl, params=params3)
+
+<span class="hljs-comment">extacting the auth code from the response</span>
+rtoken = resp.json()['refresh_token']
+atoken = resp.json()['access_token']
+
+<span class="hljs-comment">Print it out</span>
+print("\n\nAccess Token is:{}\nRefresh Token is:{}\nThese are valid for 2 hours only!".format(atoken, rtoken))
+      </pre></code>
+      <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+      </blockquote>
+      <pre><code class="highlight json">
+  {
+    "<span class="hljs-attribute">refresh_token</span>": <span class="hljs-value"><span class="hljs-number">d6e9f5209741963f9b39rf638b96e096</span></span>,
+    "<span class="hljs-attribute">token_type</span>": <span class="hljs-value"><span class="hljs-number">bearer</span></span>,
+    "<span class="hljs-attribute">access_token</span>": <span class="hljs-value"><span class="hljs-number">98c5420gtf5510yhg307de17a3c15f1a</span></span>,
+    "<span class="hljs-attribute">expires_in</span>": <span class="hljs-value"><span class="hljs-number">7200</span></span>
+  }
+</code></pre>
+
+      <p>Take your base API Gateway url as follows (below is an example. remember to use your own base url)</p>
+      <p><code>https://sol-api.arubathena.com</code></p>
+      <p>and appned the the following url:</p>
+      <p><code>/oauth2/token</code></p>
+      <p>The url to obtain the auth code becomes:</p>
+      <h3><code>https://sol-api.arubathena.com/oauth2/token</code></h3>
+      <h3>Example url:</h3>
+      <p><button type="button" class="btn btn-primary">post request</button></p>
+      <h3><code>https://sol-api.arubathena.com/oauth2/token?client_id=5fcb47dc200049d9a0f4506fc51c1c90&grant_type=authorization_code&client_secret=99c201d496004b7198a523f8ee9a7232&code=08636040b6304010b1e3c96e1fb0f434
+      </code></h3>
+      <div style="width: 60%"   class="alert alert-primary" role="alert">
+          <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;&nbsp;Remember to use your API Gateway base url instead of 'https://sol-api.arubathena.com'
+      </div>
+      <br>
+
+      <h3>Query Parameters for the API</h3>
+      <table>
+          <thead>
+          <tr>
+              <th>Parameter</th>
+              <th>Values</th>
+              <th>Description</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+              <td>client_id</td>
+              <td>A unique
+                  hexadecimal
+                  string</td>
+              <td>A unique identifier that identifies the caller. The application developers can
+                  request a client ID and client secret key by registering with the Aruba Technical
+                  Support.
+              </td>
+          </tr>
+          <tr>
+              <td>client_secret</td>
+              <td>A unique
+                  hexadecimal
+                  string</td>
+              <td>The client_secret is a unique identifier provided to each developer at the time of
+                  registration. The application developers can request a client_id and client_secret
+                  by registering with the Aruba Technical Support.
+              </td>
+          </tr>
+          <tr>
+              <td>grant_type</td>
+              <td>authorization_
+                  code</td>
+              <td>Use code to get the authorization code that can be exchanged for token.
+              </td>
+          </tr>
+          <tr>
+              <td>code</td>
+              <td>auth_code
+                  received from
+                  previous steps</td>
+              <td>The authorization code received from the authorization server.
+              </td>
+          </tr>
+          <tr>
+              <td>redirect_uri</td>
+              <td>string</td>
+              <td>The redirect URI must be the same as the one given at the time of registration.
+                  This is an optional parameter
+              </td>
+          </tr>
+          </tbody>
+      </table>
+
+      <h3>A JSON dictionary with the following values is returned as a response</h3>
+      <table>
+          <thead>
+          <tr>
+              <th>Parameter</th>
+              <th>Values</th>
+              <th>Description</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+              <td>token_type</td>
+              <td>bearer</td>
+              <td>Identifies the token type. Only the bearer token type is supported. For more
+                  information, see https://tools.ietf.org/html/rfc6750.
+              </td>
+          </tr>
+          <tr>
+              <td>refresh_token</td>
+              <td>string</td>
+              <td>Refers to the refresh tokens that are used as credentials to renew or refresh the
+                  access token when the token expires without going through the complete
+                  authorization flow. A refresh token is a string representing the authorization granted
+                  to the client by the resource owner.
+              </td>
+          </tr>
+          <tr>
+              <td>expires_in</td>
+              <td>seconds</td>
+              <td>The expiration duration of the access token in seconds
+              </td>
+          </tr>
+          <tr>
+              <td>access_token</td>
+              <td>string</td>
+              <td>Refers to the access tokens that are used as credentials to access the protected
+                  resources. An access token is a string representing an authorization issued to the
+                  client.
+              </td>
+          </tr>
+          </tbody>
+      </table>
+
+      <h1 class="h1Color" id="refresh">Refresh token</h1>
+      <blockquote>
+      <p>Refresh token:</p>
+      </blockquote>
+      <code><pre>
+<span class="hljs-comment">Setting the urls</span>
+base_url = <span class="hljs-string">"https://sol-api.arubathena.com"</span>
+url4 = <span class="hljs-string">"/oauth2/token"</span>
+refreshurl = base_url + url4
+
+<span class="hljs-comment">Setting the params, headers and the payload</span>
+params4 = {"client_id": clientid, "grant_type": "refresh_token", "client_secret": clientsecret, "refresh_token": refresh_token}
+
+<span class="hljs-comment">Sending the request</span>
+resp = requests.post(refreshurl, params=params4)
+
+<span class="hljs-comment">extacting the auth code from the response</span>
+rtoken = resp.json()['refresh_token']
+atoken = resp.json()['access_token']
+
+<span class="hljs-comment">Print it out</span>
+print("\n\nAccess Token is:{}\nRefresh Token is:{}\nThese are valid for 2 hours only!".format(atoken, rtoken))
+      </pre></code>
+      </pre></code>
+      <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+      </blockquote>
+      <pre><code class="highlight json">
+  {
+    "<span class="hljs-attribute">refresh_token</span>": <span class="hljs-value"><span class="hljs-number">22a0b827a6b5012frd2d3f89c6554396</span></span>,
+    "<span class="hljs-attribute">token_type</span>": <span class="hljs-value"><span class="hljs-number">bearer</span></span>,
+    "<span class="hljs-attribute">access_token</span>": <span class="hljs-value"><span class="hljs-number">29532cb5d3cd164d9e6c773076dba819</span></span>,
+    "<span class="hljs-attribute">expires_in</span>": <span class="hljs-value"><span class="hljs-number">7200</span></span>
+  }
+</code></pre>
+      <p>The access token is valid for 2 hours and after that you should refresh it using the refresh token. You should have got a refresh token with the access token that you have created in the earlier setion.</p>
+      <p><button type="button" class="btn btn-primary">post request</button></p>
+      <p><strong>Example url</strong></p>
+      <p><code>https://app1-apigw.central.arubanetworks.com/oauth2/token?client_id=98273576d558401581c425d5bd9df213&grant_type=refresh_token&refresh_token=1272ddc5f4c94683b7ac3080f39503f9&client_secret=e20f3fad10dc4c41bf291a49e85a3b29</code></p>
+      <h3 id="refreshQueryParams">Query Parameters</h3>
+      <table>
+          <thead>
+          <tr>
+              <th>Parameter</th>
+              <th>Values</th>
+              <th>Description</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+              <td>client_id</td>
+              <td>A unique
+                  hexadecimal
+                  string</td>
+              <td>A unique identifier that identifies the caller. The application developers can
+                  request a client ID and client secret key by registering with the Aruba Technical
+                  Support.</td>
+          </tr>
+          <tr>
+              <td>client_secret</td>
+              <td>A unique
+                  hexadecimal
+                  string</td>
+              <td>The client secret is a unique identifier provided to each developer at the time of
+                  registration. The application developers can request a client ID and client secret
+                  by registering with the Aruba Technical Support.
+              </td>
+          </tr>
+          <tr>
+              <td>grant_type</td>
+              <td>refresh_
+                  token</td>
+              <td>The grant_type must be refresh_token to refresh the token.
+              </td>
+          </tr>
+          <tr>
+              <td>refresh_token</td>
+              <td>refresh_
+                  token
+                  received
+                  from step 2</td>
+              <td>A string representing the authorization granted to the client by the resource
+                  owner</td>
+          </tr>
+          </tbody>
+      </table>
+      <h3>A JSON dictionary with the following values is returned as a response</h3>
+      <table>
+          <thead>
+          <tr>
+              <th>Parameter</th>
+              <th>Values</th>
+              <th>Description</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+              <td>token_type</td>
+              <td>bearer</td>
+              <td>Identifies the token type. Only the bearer token type is supported. For more
+                  information, see https://tools.ietf.org/html/rfc6750.
+              </td>
+          </tr>
+          <tr>
+              <td>refresh_token</td>
+              <td>string</td>
+              <td>Refresh tokens are credentials used to renew or refresh the access_token when it
+                  expires without going through the complete authorization flow. A refresh token is a
+                  string representing the authorization granted to the client by the resource owner.
+              </td>
+          </tr>
+          <tr>
+              <td>expires_in</td>
+              <td>seconds</td>
+              <td>The expiration duration of the access tokens in seconds.
+              </td>
+          </tr>
+          <tr>
+              <td>access_token</td>
+              <td>string</td>
+              <td>Access tokens are credentials used to access the protected resources. An access
+                  token is a string representing an authorization issued to the client.</td>
+          </tr>
+          </tbody>
+      </table>
+
+      <h1 class="h1Color" id="example">Examples</h1>
+      <p>In this section, we look at few of the examples of how one can do get and post data using Central API.</p>
+      <p>We will need the token that you have generated in the previous step here. Please, remember that without a valid token you won't be able to talk to the Central API Gateway.</p>
+      <h2 id="listallNetworks">List All Networks</h2>
+      <blockquote>
+          <p>List all networks:</p>
+      </blockquote>
+      <code><pre>
+<span class="hljs-comment">Setting the urls</span>
+base_url = <span class="hljs-string">"https://sol-api.arubathena.com"</span>
+ext = <span class="hljs-string">"/monitoring/v1/networks"</span>
+requeturl = base_url + ext
+
+<span class="hljs-comment">Setting the params, headers and the payload</span>
+params4 = {"access_token": 73031cb9d3ed459d9e6c546193dba911}
+
+<span class="hljs-comment">Sending the request</span>
+resp = requests.post(requeturl, params=params4)
+      </pre></code>
+      </pre></code>
+      <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+      </blockquote>
+      <pre><code class="highlight json">
+  {
+    "<span class="hljs-attribute">count</span>": <span class="hljs-value"><span class="hljs-number">0</span></span>,
+    "<span class="hljs-attribute">networks</span>":[
+      {
+        "<span class="hljs-attribute">essid</span>": <span class="hljs-value"><span class="hljs-number">string</span></span>,
+        "<span class="hljs-attribute">security</span>": <span class="hljs-value"><span class="hljs-string">"string"</span></span>,
+        "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"string"</span></span>,
+        "<span class="hljs-attribute">client_count</span>": <span class="hljs-value"><span class="hljs-number">0</span></span>,
+      }
+    ]
+</code></pre>
+      <p>Get a list of networks. You can only specify one of group, swarm_id, label parameters.
+          <p><button type="button" class="btn btn-primary btn">get request</button></p>
+      <h3>Example url</h3>
+      <p><code>https://app1-apigw.central.arubanetworks.com/monitoring/v1/aps?access_token=e325c0fb3f1547b5b735de3221690c2f</code></p>
+      <h3>The query parameters for the API are as follows:</h3>
+      <table>
+          <thead>
+          <tr>
+              <th>Parameter</th>
+              <th>Values</th>
+              <th>Description</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+              <td>request_path</td>
+              <td>URL Path</td>
+              <td>UTL path of an API, for example, to access monitoring APIs, use the path
+                  /monitoring/v1/aps
+              </td>
+          </tr>
+          <tr>
+              <td>access_token</td>
+              <td>access_token</td>
+              <td>Pass the access token string in URL parameter
+              </td>
+          </tr>
+      </table>
+          <p>Possible error_codes for the error responses are</p>
+          <p>0001 - General Error.</p>
+          <p>0003 - Validation Error. Unsupported query combination</p>
+          <p>0004 - Validation Error. Invalid value for a query parameter</p>
+      <h3>Response Messages</h3>
+      <p>200    OK</p>
+      <p>400	Bad Request</p>
+      <p>401	Unauthorized</p>
+      <p>403	Forbidden</p>
+      <p>413	Request-size limit exceeded</p>
+      <p>417	Request-size limit exceeded</p>
+      <p>429	API Rate limit exceeded</p>
+      <p>500	Internal server error</p>
+      <div style="width: 60%"   class="alert alert-primary" role="alert">
+          <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;&nbsp;This is just an example and not meant to be an exhaustive. For complete list of parameters and other things please checkout Swagger documentation (described in later sections)
+      </div>
+      <br>
+
+      <h2 id="listAccessPoints">List Access Points</h2>
+      <blockquote>
+          <p>List access points:</p>
+      </blockquote>
+      <code><pre>
+<span class="hljs-comment">Setting the urls</span>
+base_url = <span class="hljs-string">"https://sol-api.arubathena.com"</span>
+ext = <span class="hljs-string">"/monitoring/v1/aps"</span>
+requeturl = base_url + ext
+
+<span class="hljs-comment">Setting the params, headers and the payload</span>
+params4 = {"access_token": 78632cb9d3ed459d9e6c546193dba812}
+
+<span class="hljs-comment">Sending the request</span>
+resp = requests.post(requeturl, params=params4)
+      </pre></code>
+      </pre></code>
+      <blockquote>
+          <p>The above command returns JSON structured like this:</p>
+      </blockquote>
+      <pre><code class="highlight json">
+  {
+    "<span class="hljs-attribute">count</span>": <span class="hljs-value"><span class="hljs-number">0</span></span>,
+    "<span class="hljs-attribute">total</span>": <span class="hljs-value"><span class="hljs-number">0</span></span>,
+    "<span class="hljs-attribute">aps</span>":[
+      {
+        "<span class="hljs-attribute">serial</span>": <span class="hljs-value"><span class="hljs-number">"string"</span></span>,
+        "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"string"</span></span>,
+        "<span class="hljs-attribute">macaddr</span>": <span class="hljs-value"><span class="hljs-string">"string"</span></span>,
+        "<span class="hljs-attribute">swarm_id</span>": <span class="hljs-value"><span class="hljs-number">"string"</span></span>,
+        "<span class="hljs-attribute">group_name</span>": <span class="hljs-value"><span class="hljs-number">"string"</span></span>,
+        "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"string"</span></span>,
+        "<span class="hljs-attribute">ip_address</span>": <span class="hljs-value"><span class="hljs-string">"string"</span></span>,
+        "<span class="hljs-attribute">model</span>": <span class="hljs-value"><span class="hljs-number">"string"</span></span>,
+        "<span class="hljs-attribute">firmware_version</span>": <span class="hljs-value"><span class="hljs-number">true</span></span>,
+        "<span class="hljs-attribute">swarm_master</span>": <span class="hljs-value"><span class="hljs-string">"string"</span></span>,
+        "<span class="hljs-attribute">client_count</span>": <span class="hljs-value"><span class="hljs-string">0</span></span>,
+        "<span class="hljs-attribute">ssid_count</span>": <span class="hljs-value"><span class="hljs-number">0</span></span>,
+        "<span class="hljs-attribute">labels</span>":[
+            <span class="hljs-value"><span class="hljs-number">"String"</span></span>,
+        ]
+        "<span class="hljs-attribute">cpu_utilization</span>": <span class="hljs-value"><span class="hljs-string">0</span></span>,
+        "<span class="hljs-attribute">uptime</span>": <span class="hljs-value"><span class="hljs-string">0</span></span>,
+        "<span class="hljs-attribute">down_reason</span>": <span class="hljs-value"><span class="hljs-string">"String"</span></span>,
+        "<span class="hljs-attribute">last_modified</span>": <span class="hljs-value"><span class="hljs-string">0</span></span>,
+        "<span class="hljs-attribute">mem_total</span>": <span class="hljs-value"><span class="hljs-string">0</span></span>,
+        "<span class="hljs-attribute">mem_free</span>": <span class="hljs-value"><span class="hljs-string">0</span></span>,
+        "<span class="hljs-attribute">radios</span>":[
+            {
+                "<span class="hljs-attribute">macaddr</span>": <span class="hljs-value"><span class="hljs-string">"string"</span></span>,
+                "<span class="hljs-attribute">index</span>": <span class="hljs-value"><span class="hljs-string">0</span></span>,
+                "<span class="hljs-attribute">status</span>": <span class="hljs-value"><span class="hljs-string">"string"</span></span>,
+                "<span class="hljs-attribute">band</span>": <span class="hljs-value"><span class="hljs-string">0</span></span>,
+                "<span class="hljs-attribute">channel</span>": <span class="hljs-value"><span class="hljs-string">"string"</span></span>,
+                "<span class="hljs-attribute">tx_power</span>": <span class="hljs-value"><span class="hljs-string">0</span></span>,
+                "<span class="hljs-attribute">utilization</span>": <span class="hljs-value"><span class="hljs-string">0</span></span>,
+            }
+        ]
+      }
+    ]
+</code></pre>
+    <p>Get access points. You can only specify one of group, swarm_id, label parameters. Possible error_codes for the error responses are</p>
+      <p><button type="button" class="btn btn-primary btn">get request</button></p>
+      <p>0001 - General Error.</p>
+      <p>0002 - Validation Error. Out of Range value for a query parameter.</p>
+      <p> 0003 - Validation Error. Unsupported query combination</p>
+      <p>0004 - Validation Error. Invalid value for a query parameter</p>
+      <h3>Response Messages</h3>
+      <p>200    OK</p>
+      <p>400	Bad Request</p>
+      <p>401	Unauthorized</p>
+      <p>403	Forbidden</p>
+      <p>413	Request-size limit exceeded</p>
+      <p>417	Request-size limit exceeded</p>
+      <p>429	API Rate limit exceeded</p>
+      <p>500	Internal server error</p>
+      <div style="width: 60%"   class="alert alert-primary" role="alert">
+          <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;&nbsp;This is just an example and not meant to be an exhaustive. For complete list of parameters and other things please checkout Swagger documentation (described in later sections)
+      </div>
+      <br>
+
+    <h1 class="h1Color" id="swagger">Swagger</h1>
+    <p>Swagger is an open source framework of API developer tools. A complete list of Aruba Central's API can be found on your Aruba Central's Swagger link.</p>
+      <h2 id="accessSwagger">Access Swagger</h2>
+      <p>This section gives information on where to find your Central API swagger link.</p>
+      <p>Login to your Cental account and select 'Maintenance app' from top left app grid:</p>
+      <div>
+          <img class="insideScreenshotMedium" src="images/selectMaintenanceApp.JPG" alt="">
+      </div>
+      <br>
+      <p>Make sure you have access to 'API Gateway' under 'Maintenance'</p>
+      <div>
+          <img class="insideScreenshotSmall" src="images/clickApiGateway.JPG" alt="">
+      </div>
+      <br>
+      <p>On API Gateway page you will see a URL under APIs</p>
+      <div>
+          <img class="insideScreenshotLarge" src="images/apiGatewayAPIs.JPG" alt="">
+      </div>
+      <br>
+      <p>This is your swagger link. When you click on it, it will open swagger in a new tab. Here you can see a list of all the API available for you to make use of.</p>
+      <div>
+          <img class="insideScreenshotLarge" src="images/swaggerPage.JPG" alt="">
+      </div>
+      <br>
+
+      <h2 id="useSwagger">How to use swagger</h2>
+      <p>On the top left you will see a 'dropdown' to select what API you want use, Monitoring, Configuration, MSP, etc.</p>
+      <p>And right below that you enter the access token and the press the right arrow button</p>
+      <div>
+          <img class="insideScreenshotSmall" src="images/monitorAPI.JPG" alt="">
+      </div>
+      <br>
+      <h3>Example: let's list all access points using Swagger</h3>
+      <p>We select Monitoring frrom 'URL' dropdown and enter our access token and press the right arrow button on the right of the token text box</p>
+      <p>Now, under 'API reference' we see all the APIs present. We select 'List Access points' under 'AP' </p>
+      <div>
+          <img class="insideScreenshotLarge" src="images/listAccessPoints.JPG" alt="">
+      </div>
+      <br>
+      <p>- Now, on the page we see the details on <strong>'List Access Point' API</strong>. what kind of request it is 'get' or 'post' or 'delete,' etc. </p>
+      <p>- We see the <strong>extended URL</strong> for this API that needs to be placed after the <strong>base URL</strong> of the API gateway (we explained base URL in earlier secions)</p>
+      <p>- In the middle, you will see a <strong>complete list of parameters</strong>     that can be passed to this API.</p>
+      <p>- On the right, you will see a <strong>'Response Sample</strong>'. It gives you information on what to expect back from the API gateway in response.</p>
+      <div>
+          <img class="insideScreenshotLarge" src="images/listAccessPointsCompletePage.JPG" alt="">
+      </div>
+      <br>
+      <p>Now, if you scroll down to the middle bottom under the parameters you will see '<strong>Try</strong>' button. Hit that button to see the output to your API request.</p>
+      <div>
+          <img class="insideScreenshotLarge" src="images/try.JPG" alt="">
+      </div>
+      <br>
+      <p>The response will be a pop up window displaying the API output.</p>
+      <div>
+          <img class="insideScreenshotLarge" src="images/responsePopUp.JPG" alt="">
+      </div>
+      <br>
+      <p>This is the exact output you can expect when you use Central API Gateway in your custom application</p>
+
+
+      <h1 class="h1Color" id="authentication">Authentication</h1>
+    <blockquote>
+      <p>To authorize, use this code:</p>
+    </blockquote>
+    <pre><code class="highlight ruby"><span class="hljs-keyword">require</span> <span class="hljs-string">'kittn'</span>
+
+api = <span class="hljs-constant">Kittn::APIClient</span>.authorize!(<span class="hljs-string">'meowmeowmeow'</span>)
+    </code></pre>
+    <pre><code class="highlight python"><span class="hljs-keyword">import</span> kittn
+
+api = kittn.authorize(<span class="hljs-string">'meowmeowmeow'</span>)
+    </code></pre>
+    <pre><code class="highlight shell"><span class="hljs-comment"># With shell, you can just pass the correct header with each request</span>
+curl <span class="hljs-string">"api_endpoint_here"</span>
+  -H <span class="hljs-string">"Authorization: meowmeowmeow"</span>
+</code></pre>
+    <blockquote>
+      <p>Make sure to replace <code>meowmeowmeow</code> with your API key.</p>
+    </blockquote>
+    <p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
+    <p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
+    <p><code>Authorization: meowmeowmeow</code></p>
+    <aside class="notice">
+      You must replace <code>meowmeowmeow</code> with your personal API key.
+    </aside>
+
+    <h1 class="h1Color" id="kittens">Kittens</h1>
+    <h2 id="get-all-kittens">Get All Kittens</h2>
+    <pre><code class="highlight ruby"><span class="hljs-keyword">require</span> <span class="hljs-string">'kittn'</span>
+
+api = <span class="hljs-constant">Kittn::APIClient</span>.authorize!(<span class="hljs-string">'meowmeowmeow'</span>)
+api.kittens.get
+</code></pre>
+    <pre><code class="highlight python"><span class="hljs-keyword">import</span> kittn
+
+api = kittn.authorize(<span class="hljs-string">'meowmeowmeow'</span>)
+api.kittens.get()
+</code></pre>
+    <pre><code class="highlight shell">curl <span class="hljs-string">"http://example.com/api/kittens"</span>
+  -H <span class="hljs-string">"Authorization: meowmeowmeow"</span>
+</code></pre>
+    <blockquote>
+      <p>The above command returns JSON structured like this:</p>
+    </blockquote>
+    <pre><code class="highlight json">[
+  {
+    "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">1</span></span>,
+    "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Fluffums"</span></span>,
+    "<span class="hljs-attribute">breed</span>": <span class="hljs-value"><span class="hljs-string">"calico"</span></span>,
+    "<span class="hljs-attribute">fluffiness</span>": <span class="hljs-value"><span class="hljs-number">6</span></span>,
+    "<span class="hljs-attribute">cuteness</span>": <span class="hljs-value"><span class="hljs-number">7</span>
+  </span>},
+  {
+    "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
+    "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Isis"</span></span>,
+    "<span class="hljs-attribute">breed</span>": <span class="hljs-value"><span class="hljs-string">"unknown"</span></span>,
+    "<span class="hljs-attribute">fluffiness</span>": <span class="hljs-value"><span class="hljs-number">5</span></span>,
+    "<span class="hljs-attribute">cuteness</span>": <span class="hljs-value"><span class="hljs-number">10</span>
+  </span>}
+]
+</code></pre>
+    <p>This endpoint retrieves all kittens.</p>
+    <h3 id="http-request">HTTP Request</h3>
+    <p><code>GET http://example.com/api/kittens</code></p>
+    <h3 id="query-parameters">Query Parameters</h3>
+    <table>
+      <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>include_cats</td>
+        <td>false</td>
+        <td>If set to true, the result will also include cats.</td>
+      </tr>
+      <tr>
+        <td>available</td>
+        <td>true</td>
+        <td>If set to false, the result will include kittens that have already been adopted.</td>
+      </tr>
+      </tbody>
+    </table>
+    <aside class="success">
+      Remember — a happy kitten is an authenticated kitten!
+    </aside>
+
+    <h2 id="get-a-specific-kitten">Get a Specific Kitten</h2>
+    <pre><code class="highlight ruby"><span class="hljs-keyword">require</span> <span class="hljs-string">'kittn'</span>
+
+api = <span class="hljs-constant">Kittn::APIClient</span>.authorize!(<span class="hljs-string">'meowmeowmeow'</span>)
+api.kittens.get(<span class="hljs-number">2</span>)
+</code></pre>
+    <pre><code class="highlight python"><span class="hljs-keyword">import</span> kittn
+
+api = kittn.authorize(<span class="hljs-string">'meowmeowmeow'</span>)
+api.kittens.get(<span class="hljs-number">2</span>)
+</code></pre>
+    <pre><code class="highlight shell">curl <span class="hljs-string">"http://example.com/api/kittens/2"</span>
+  -H <span class="hljs-string">"Authorization: meowmeowmeow"</span>
+</code></pre>
+    <blockquote>
+      <p>The above command returns JSON structured like this:</p>
+    </blockquote>
+    <pre><code class="highlight json">{
+  "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-number">2</span></span>,
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Isis"</span></span>,
+  "<span class="hljs-attribute">breed</span>": <span class="hljs-value"><span class="hljs-string">"unknown"</span></span>,
+  "<span class="hljs-attribute">fluffiness</span>": <span class="hljs-value"><span class="hljs-number">5</span></span>,
+  "<span class="hljs-attribute">cuteness</span>": <span class="hljs-value"><span class="hljs-number">10</span>
+</span>}
+</code></pre>
+    <p>This endpoint retrieves a specific kitten.</p>
+    <aside class="warning">If you're not using an administrator API key, note that some kittens will return 403 Forbidden if they are hidden for admins only.</aside>
+
+    <h3 id="http-request">HTTP Request</h3>
+    <p><code>GET http://example.com/kittens/&lt;ID&gt;</code></p>
+    <h3 id="url-parameters">URL Parameters</h3>
+    <table>
+      <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Description</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>ID</td>
+        <td>The ID of the kitten to retrieve</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <h1 class="h1Color" id="errors">Errors</h1>
+    <aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Slate allows you to optionally separate out your docs into many files...just save them to the `includes` folder and add them to the top of your `index.md`'s frontmatter. Files are included in the order listed.</aside>
+
+    <p>The Kittn API uses the following error codes:</p>
+    <table>
+      <thead>
+      <tr>
+        <th>Error Code</th>
+        <th>Meaning</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>400</td>
+        <td>Bad Request -- Your request sucks</td>
+      </tr>
+      <tr>
+        <td>401</td>
+        <td>Unauthorized -- Your API key is wrong</td>
+      </tr>
+      <tr>
+        <td>403</td>
+        <td>Forbidden -- The kitten requested is hidden for administrators only</td>
+      </tr>
+      <tr>
+        <td>404</td>
+        <td>Not Found -- The specified kitten could not be found</td>
+      </tr>
+      <tr>
+        <td>405</td>
+        <td>Method Not Allowed -- You tried to access a kitten with an invalid method</td>
+      </tr>
+      <tr>
+        <td>406</td>
+        <td>Not Acceptable -- You requested a format that isn&#39;t json</td>
+      </tr>
+      <tr>
+        <td>410</td>
+        <td>Gone -- The kitten requested has been removed from our servers</td>
+      </tr>
+      <tr>
+        <td>418</td>
+        <td>I&#39;m a teapot</td>
+      </tr>
+      <tr>
+        <td>429</td>
+        <td>Too Many Requests -- You&#39;re requesting too many kittens! Slow down!</td>
+      </tr>
+      <tr>
+        <td>500</td>
+        <td>Internal Server Error -- We had a problem with our server. Try again later.</td>
+      </tr>
+      <tr>
+        <td>503</td>
+        <td>Service Unavailable -- We&#39;re temporarially offline for maintanance. Please try again later.</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="dark-box">
+    <div class="lang-selector">
+      <!--<a href="#" data-language-name="shell"> cURL</a>-->
+      <!--<a href="#" data-language-name="ruby"> Ruby</a>-->
+      <a href="#" data-language-name="python"> Python</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>
